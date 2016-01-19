@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<1B40><1B40><1B40>
+<1D2111><1B6101><?php echo $store_name;?><0D0A><0D0A>
+<1B6100><1D2100><0D0A>
+订单号：<?php echo $order->order_sn;?><0D0A>
+类型：<?php echo getShippingType($order->shipping_name);?><0D0A>
+<?php if ($order->renshu){?>
+消费人数：<?php echo $order->renshu;?><0D0A>
+<?php }?>
+<?php if ($is_pay){?>
+备注：该桌要求结账！<0D0A>
+<?php }?>
+桌号：<?php echo getTableByName($order->table_id);?><0D0A>
+<0D0A>
+------------<0D0A>
+<?php if (is_array($goodsList)){?>
+<?php foreach ($goodsList as $goods){?>
+<?php echo $goods->goods_name;?> X<?php echo $goods->goods_number;?>  <?php echo $goods->goods_number * $goods->goods_price;?>元<0D0A>
+<?php }?>
+<?php }?>
+------------<0D0A>
+<0D0A>
+合计：￥<?php echo $order->order_amount+ $order->discount;?><0D0A>
+实收：￥<?php echo $order->order_amount ;?><0D0A>
+优惠：￥<?php echo $order->discount;?><0D0A>
+是否付款：<?php echo getPayStatus($order->pay_status);?><0D0A>
+付款方式：<?php echo getPaytypeName($order->pay_name);?><0D0A>
+下单时间：<?php echo $order->add_time;?><0D0A>
+<0D0A>
+<0D0A>
+<1B2A>http://weixin.qq.com/r/I0PN1crE2ZemrY629xYx<1B2A>
+<1B2AD>欢迎关注<?php echo $store_name;?>！<1B2AD>
+<0D0A><0D0A><0D0A><0D0A><0D0A><0D0A>
+</body>
+</html>

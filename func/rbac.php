@@ -29,11 +29,13 @@ class royaltea{
 
         $sql = "INSERT INTO {$this->tablename}({$keys}) VALUES($values)";
         $query = mysql_query($sql);
+//        print_r($sql);
         //return mysql_insert_id();
         if ($query) {
             echo '录入成功';
         } else {
-            echo '录入失败' . mysql_error();
+//            echo '录入失败' . mysql_error();
+            echo $sql.mysql_error();
         }
     }
     function select($tablename,$array,$where)  {
@@ -45,6 +47,18 @@ class royaltea{
         $select = $select==null?null:$slect;
         $where = $this->where ==null?null:$this->where;
         $sql = "SELECT * FROM {$this->tablename}".$where.' '.$select;
+    }
+
+    function update($table,$array,$where=null){
+        foreach($array as $key =>$value ){
+            $string[]='`'.$key.'`='.$value;
+        }
+        $string = implode(',',$string);
+        $where = $where ==null?null:"where".$where;
+        $sql = "UPDATE '{$table}' set ".$string.' '.$where;
+        print_r($sql);
+//        $query = mysql_query($sql);
+//        return $query;
     }
 
     function del($tablename,$sid){

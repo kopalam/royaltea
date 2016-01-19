@@ -5,7 +5,7 @@
             echo '<script language="javascript">
                         alert("你已经登陆！！");
                         location.href="cm/index.php";
-                        </script> '.$_SESSION['username'];
+                        </script> ';
     }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -57,34 +57,60 @@
 
 <?php
 
-
+//使用session 记录，groups ＝ 0 为管理员，跳转到管理员后台。groups ＝ 1，为员工，员工跳转到对应门店的页面
+//
 
     if(isset($_POST['submit'])){
         $username = $_POST['username'];
         $password = md5($_POST['password']);
-
+        $array = $_POST;//array 是获取过来的数组
+        unset($array['submit']);
+        $array['password']=md5($array['password']);
+//       print_r($array);
+        echo '<br>';
         $sql = "SELECT * FROM `user` WHERE `username` = '{$username}' AND `password` = '{$password}'";
         $query = mysql_query($sql);
         $res = mysql_fetch_array($query);
-
-        if($res['username'] == $username){
-            echo '<script language="javascript">
-                        alert("登录成功！！");
-                        location.href="cm/index.php";
-                        </script> ';
-            $_SESSION['username'] = $username;
-
-        }else{
-            echo '账号或密码错误';
-
-        }
-
-
-
+//        print_r($res['password']);
+//
+        $user = new user();
+        $user = $user->user_check($array,$res);
 
 
     }
 
+
+
+
+
+
+
+
+
+
+//业务逻辑 如果username = $res['username'] ,跳转到管理员后台
+//
+//        if($res['username'] == $username && $res['groups'] == 0){
+//            $_SESSION['username'] = $username;
+//            $_SESSION['groups'] = $res['groups'];
+//            echo '<script language="javascript">
+//                        alert("登录成功！！");
+//                        location.href="cm/index.php";
+//                        </script> ';
+//        }elseif($res['username'] == $username && $res['groups'] == 1){
+//            $_SESSION['username'] = $username;
+//            $_SESSION['store'] = $res['store'];
+//            $_SESSION['groups'] = $res['groups'];
+//            $url = "line.php?id=".$res['id'].'&store='.$res['store'];
+//           header("Location:".$url);
+//
+//
+//        }else{
+//            echo '<script language="javascript">
+//                        alert("账号或密码错误！！");
+//                        location.href="login.php";
+//                        </script> ';
+//        }
 ?>
 
 

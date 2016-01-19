@@ -14,7 +14,7 @@ if(empty($_SESSION['username'])) {
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>新增门店</title>
+    <title>新增员工</title>
   
     <meta name="description" content="">
     <meta name="author" content="">
@@ -58,6 +58,7 @@ if(empty($_SESSION['username'])) {
                               <option>东莞市</option>
                             </select>
                             </div>
+
 
                             <div class="form_list"><input type="submit" name="submit" class="submit" value="&nbsp;&nbsp;提&nbsp;&nbsp;交&nbsp;&nbsp;"></div>
                          </form>   

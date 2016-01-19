@@ -2,9 +2,17 @@
 require_once '../include.php';
 if(empty($_SESSION['username'])) {
     echo '<script language="javascript">
-                        alert("你还没有登陆！！");
+                        alert("你不能进行该操作！！");
                         location.href="../login.php";
                         </script> ';
+}elseif($_SESSION['groups']==1 ){
+    $url = '../line.php?id=' . $_SESSION['id'] . '&store=' . $_SESSION['store'];
+    //使用此方法直接跳转
+    echo "<script>location.href='$url';</script>";
+}elseif( $_SESSION['groups']==2){
+    $url = '../single.php?id=' . $_SESSION['id'] . '&store=' .$_SESSION['store'];
+    //使用此方法直接跳转
+    echo "<script>location.href='$url';</script>";
 }
 
 ?>
@@ -90,22 +98,24 @@ if(empty($_SESSION['username'])) {
                           <div style=" height:8px; width:100%;"></div>
                           <li><a href="add.php" target="right" onClick="getclassname(this)">添加门店&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="float:right;font-size:20px;">></font></a></li>
                           <li><a href="list.php" target="right" onClick="getclassname(this)">门店管理&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="float:right;font-size:20px;">></font></a></li>
+                        <li><a href="reg.php" target="right" onClick="getclassname(this)">新增员工&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="float:right;font-size:20px;">></font></a></li>
+
                         <li><a href="../logout.php" target="right" onClick="getclassname(this)">退出&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="float:right;font-size:20px;">></font></a></li>
                         <div style=" height:8px; width:100%;"></div>
                         
                     </ul>
                 </li>
-                <!--<li><a href="客户管理.html" target="right" onClick="getclassname(this)"><i class="icon-reorder"></i>&nbsp;&nbsp;客户管理</a>-->
+<!--                <li><a href="reg.php" target="right" onClick="getclassname(this)"><i class="icon-reorder"></i>&nbsp;&nbsp;新增员工</a>-->
                    <!-- -->
-                <!--</li>-->
-                <!--<li><a href="#"><i class="icon-tasks"></i>&nbsp;&nbsp;干预管理</a>-->
+<!--                </li>-->
+<!--                <li><a href="reg.php"><i class="icon-tasks"></i>&nbsp;&nbsp;新增员工</a>-->
                    <!-- -->
                 <!--</li>-->
                 <!--<li><a href="page_calendar.html"><i class="icon-calendar"></i>&nbsp;&nbsp;产品管理</a></li>-->
                 <!--<li><a href="page_statistics.html"><i class="icon-signal"></i>&nbsp;&nbsp;消息管理</a></li>-->
                 <!--<li><a href="#"><i class="icon-table"></i>&nbsp;&nbsp;客户记录</a>-->
                    <!-- -->
-                <!--</li>-->
+<!--                </li>-->
                 <!--<li><a href="#"><i class="icon-warning-sign"></i>&nbsp;&nbsp;充值记录</a>-->
                     <!-- -->
                 <!--</li>-->

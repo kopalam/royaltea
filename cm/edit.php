@@ -12,8 +12,8 @@
         $sql = "SELECT * FROM `store` WHERE `sid` = '{$sid}' LIMIT 1";
         $query = mysql_query($sql);
         $result = mysql_fetch_array($query);
-
     }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +51,8 @@
 
 
                         <div class="well brown">
-                         <form action="add.php" method="post">
+                         <form action="edit.php" method="post">
+                             <input  type="hidden" name="sid" value="<?php echo $result['sid'] ; ?>">
                             <div class="form_list"><label class="lable_title">门店名称</label><input class="form_input" name="name" type="text" value="<?php echo $result['name'] ?>"/></div>
                             <div class="form_list"><label class="lable_title">所在城市</label>
                             <select style="width:150px; margin-left:15px;" name="address">
@@ -83,3 +84,22 @@
 
   </body>
 </html>
+<?php
+
+    if(isset($_POST['submit'])){
+       $id = $_POST['sid'];
+        $name = $_POST['name'];
+        $address = $_POST['address'];
+        $sql = "UPDATE `store` set `sid`='$id',`name`='$name',`address`='$address' where `sid` = '$id' limit 1 ";
+        $query = mysql_query($sql);
+        if($query){
+            echo '修改成功';
+        }else{
+            echo "执行失败".mysql_error();
+        }
+
+
+    }
+
+
+?>

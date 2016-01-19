@@ -1,0 +1,113 @@
+@charset "utf-8";
+
+body{
+    background: #eee;
+    font-size: 62.5%;
+}
+@media screen and (max-width: 320px) {
+    html {
+        font-size:40px;
+        font-size: calc(320px / 8)
+    }
+}
+
+@media screen and (min-width: 321px)and (max-width:360px) {
+    html {
+        font-size:45px;
+        font-size: calc(360px / 8)
+    }
+}
+
+@media screen and (min-width: 361px)and (max-width:375px) {
+    html {
+        font-size:46.88px;
+        font-size: calc(375px / 8)
+    }
+}
+
+@media screen and (min-width: 376px)and (max-width:385px) {
+    html {
+        font-size:48.13px;
+        font-size: calc(385px / 8)
+    }
+}
+
+@media screen and (min-width: 386px)and (max-width:450px) {
+    html {
+        font-size:50px;
+        font-size: calc(400px / 8)
+    }
+}
+
+@media screen and (min-width: 451px)and (max-width:800px) {
+    html {
+        font-size:56.25px;
+        font-size: calc(450px / 8)
+    }
+}
+body, ul, dl, dd, dt, ol, li, p, h1, h2, h3, textarea, form, select, fieldset, table, td, div, input,button {
+    margin: 0;
+    padding: 0;
+    -webkit-text-size-adjust: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+div {
+    text-align: left
+}
+
+a img {
+    border: 0
+}
+
+ul, ol, li {
+    list-style-type: none;
+    vertical-align: 0
+}
+.text-center {
+    text-align: center;
+}
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+a {
+    outline-style: none;
+    color: #535353;
+    text-decoration: none
+}
+
+a:hover {
+    text-decoration: none
+}
+
+.clear {
+    height: 0;
+    overflow: hidden;
+    clear: both
+}
+
+
+p {
+    font-size: 12px;
+    line-height: 1em;
+    font-family: 微软雅黑, Arail, sans-serif;
+}
+
+body{ background: url("../images/rbg.jpg") no-repeat; background-size: 100% auto;}
+
+.logo{ position: absolute; right:35px; top:35px;}
+.logo img{ width: 145px; height: auto;}
+
+.main{ position: absolute; top:50%;margin-top: -53px; text-align: center; width: 100%;}
+.main p{ text-align: center; font-size: 16px; color: #fff; padding:  0 20px;}
+.main p.title{font-size: 30px; line-height: 1em; }
+.main p.title span.title{ display: inline; font-size: 90px; line-height: 1em;}
+.main p span.title{ font-size: 50px; color: #fff; display: block; line-height: 1.8em; text-align: center;}
+.main p span{  display: block; line-height: 2em;}
