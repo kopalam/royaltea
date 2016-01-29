@@ -80,37 +80,6 @@
     }
 
 
-
-
-
-
-
-
-
-
-//业务逻辑 如果username = $res['username'] ,跳转到管理员后台
-//
-//        if($res['username'] == $username && $res['groups'] == 0){
-//            $_SESSION['username'] = $username;
-//            $_SESSION['groups'] = $res['groups'];
-//            echo '<script language="javascript">
-//                        alert("登录成功！！");
-//                        location.href="cm/index.php";
-//                        </script> ';
-//        }elseif($res['username'] == $username && $res['groups'] == 1){
-//            $_SESSION['username'] = $username;
-//            $_SESSION['store'] = $res['store'];
-//            $_SESSION['groups'] = $res['groups'];
-//            $url = "line.php?id=".$res['id'].'&store='.$res['store'];
-//           header("Location:".$url);
-//
-//
-//        }else{
-//            echo '<script language="javascript">
-//                        alert("账号或密码错误！！");
-//                        location.href="login.php";
-//                        </script> ';
-//        }
 ?>
 
 

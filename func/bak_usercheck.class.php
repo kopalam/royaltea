@@ -11,6 +11,9 @@ session_start();
 class user
 {
 
+
+
+
     function user_check($user,$result)
     {
         //$result 存入的是遍历数据表后的数组，$user存入的是用户输入的账号密码
@@ -57,8 +60,10 @@ class user
 
     //出票和打印函数
 
-    function single($sid,$get_img){
+    function single($sid){
         //single 出单操作
+
+
         if(isset($sid)) {
             $tid = null;
             $username = $_SESSION['username'];
@@ -85,16 +90,21 @@ class user
                 $dingdanID=array_unique($dingdanID);
             }
 
-
+            //获取openid 第一步 生成 授权二维码
+            $appId = 'wx4a5705a0d58ff752';
+            $appSecrect = '90275d62180bd8653ff32736f6dc03a1';
+            $user_url = urlencode($_SERVER['HTTP_HOST'].'/royaltea'.'/waiting.php?'.'num='.$num.'&store='.$store);
+            $weixin_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appId}&redirect_uri={$user_url}&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
+            var_dump($weixin_url);
 
 
 
             //打印机api
             $url = 'line.php?id='.$sid . '&store='.$store; //跳转到原来页面
             $post = 'http://42.121.124.104:60002';//POST指向的API链接
-            $dingdan = '<1B40><1B40><1B40><1D2111><1B6101>美西西皇茶<0D0A>
+            $dingdan = "<1B40><1B40><1B40><1D2111><1B6101>美西西皇茶<0D0A>
                         <1B6100><1D2110><1D2101>你的单号是'.$num.'<0D0A>
-                        <1B2A>'.$get_img.'<1B2A>'; //二维码内容
+                        <1B2A>{$weixin_url}<1B2A>"; //二维码内容
             $dayinjisn =$_SESSION['dayinjisn'];
             $dingdanID = implode("",$dingdanID);
             $pages = 1;
@@ -163,6 +173,36 @@ class user
         return $handles;
     }
 
+    function https_post($url,$data = null)
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+        if (!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($curl);
+        curl_close($curl);
+        return $output;
+    }
 
 
 }
+
+$weixin_qrcode = new user();
+$appId = 'wx4a5705a0d58ff752';
+$appSecrect = '90275d62180bd8653ff32736f6dc03a1';
+$token = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appId}&secret={$appSecrect}";
+//    var_dump($token);
+$access_token = '';
+//临时二维码
+$qrcode = '{"expire_seconds":1800,"action_name":"QR_SCENE","action_info":{"scene":{"scene_id":10000}}}';
+
+$url ="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={$access_token}";
+$result = $weixin_qrcode->https_post($url,$qrcode);
+$jsoninfo = json_decode($result,true);
+$ticket = $jsoninfo('ticket');

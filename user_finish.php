@@ -17,7 +17,7 @@ require_once 'include.php';
 <body>
 <div class="logo"><a href=""><img src="images/rlogo.png" alt=""></a></div>
 <div class="main">
-    <p><span class="title">制作完成啦！</span>感谢您的等待，您的皇茶已经在等候你啦！</p>
+    <p><span class="title">制作完成啦！</span>感谢您的等待，您的茶已经在等候你！</p>
 </div>
 </body>
 </html>
