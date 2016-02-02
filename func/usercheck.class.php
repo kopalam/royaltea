@@ -8,6 +8,8 @@ session_start();
  * Time: 下午6:19
  */
 //用户操作和验证的类库
+require_once 'get_token.php';
+
 class user
 {
 
@@ -57,10 +59,10 @@ class user
 
     //出票和打印函数
 
-    function single($sid,$get_img){
+    function single($sid){
         //single 出单操作
         if(isset($sid)) {
-            $tid = null;
+            $tid;
             $username = $_SESSION['username'];
             $store = $_SESSION['store'];
             $finish = 0;
@@ -76,6 +78,34 @@ class user
             $sql = "INSERT INTO `ticket` (`tid`,`num`,`username`,`store`,`finish`,`dates`) VALUES('{$tid}','{$num}','{$username}','{$store}','{$finish}','{$dates}')";
             $query = mysql_query($sql);
 
+                //----------------获取最新传入的tid------------------
+            $select_tid = "SELECT * FROM `ticket`  WHERE store = '{$store}'  ORDER BY `tid` DESC";
+            $qu = mysql_query($select_tid);
+            $rs = mysql_fetch_array($qu);
+            $tid = !empty($rs['tid'])?$rs['tid']:$rs['tid']+1; //如果tid不为空，就用tid，如果为空，则+1.防止tid为0.
+
+
+//            $_SESSION['tid'] = $tid;
+
+            //----------------获取最新传入的tid------------------
+
+            //生成网址二维码
+
+            $appId = trim('wx4a5705a0d58ff752');
+            $appSecret =trim('a3d6e50f86a17fb5f9d0f5265d711d99');
+            $access_token = get_weixin_token($appId,$appSecret);
+
+//                print_r($access_token);exit;
+
+
+            $qr_Scene = '{"expire_seconds": 604800, "action_name": "QR_SCENE", "action_info": {"scene": {"scene_id":'.$tid.'}}}';
+//            print_r($qr_Scene);
+            $qrcode_url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={$access_token}";
+            $result = postWeixinData($qrcode_url,$qr_Scene);
+            $jsoninfo = json_decode($result,true);
+//    var_dump($jsoninfo);
+            $ticket = $jsoninfo['url'];
+
             //订单id
 
             $dingdanID=array();
@@ -85,16 +115,12 @@ class user
                 $dingdanID=array_unique($dingdanID);
             }
 
-
-
-
-
             //打印机api
             $url = 'line.php?id='.$sid . '&store='.$store; //跳转到原来页面
             $post = 'http://42.121.124.104:60002';//POST指向的API链接
             $dingdan = '<1B40><1B40><1B40><1D2111><1B6101>美西西皇茶<0D0A>
                         <1B6100><1D2110><1D2101>你的单号是'.$num.'<0D0A>
-                        <1B2A>'.$get_img.'<1B2A>'; //二维码内容
+                        <1B2A>'.$ticket.'<1B2A>'; //二维码内容
             $dayinjisn =$_SESSION['dayinjisn'];
             $dingdanID = implode("",$dingdanID);
             $pages = 1;
@@ -109,16 +135,13 @@ class user
             $post_data = implode('&',$data);
             $result = $this->postData($post,$post_data);
             echo $result;
-
-            //如果执行成功
+//
+//            //如果执行成功
             if($query){
                 echo "<script language='javascript'>
                         alert('出单成功');
                         location.href='$url';
                         </script> ";
-
-
-
 
             }else{
                 echo "<script language='javascript'>
@@ -133,7 +156,9 @@ class user
     function sucess($url,$query){
         if($query){
             echo "<script>location.href='$url';</script>";
-              return $query;
+            return $query;
+
+
         }else{
             echo "<script language='javascript'>
                         alert('失败');

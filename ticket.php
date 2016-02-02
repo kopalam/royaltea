@@ -16,69 +16,27 @@ if(isset($_REQUEST['sid'])){
     $sid = $_REQUEST['sid'];
     $store = $_SESSION['store'];
 
-
-    //生成网址二维码
-
-    $appId = trim('wx4a5705a0d58ff752');
-    $appSecret =trim('a3d6e50f86a17fb5f9d0f5265d711d99');
-    $access_token = get_weixin_token($appId,$appSecret);
-//    print_r($access_token);
-
-    $qr_Scene = '{"expire_seconds": 604800, "action_name": "QR_SCENE", "action_info": {"scene": {"scene_id":'.$sid.'}}}';
-    $qrcode_url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={$access_token}";
-    $result = postData($qrcode_url,$qr_Scene);
-    $jsoninfo = json_decode($result,true);
-    $ticket = $jsoninfo['ticket'];
-    $ticket = urlencode($ticket);
-    $get_img = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={$ticket}";
-
-    //长网址转换短网址
-    $need_url = "https://api.weixin.qq.com/cgi-bin/shorturl?access_token={$access_token}"; //需要转换的长地址
-    $short_api = '{"action":"long2short","long_url":"'.$get_img.'"}'; //api
-    $short_url = (array)json_decode(getShort($short_api,$need_url));
-    $short_url =$short_url['short_url'];
-
-    $qrcode_img = file_get_contents($get_img);
-//    global $qrcode_img;
-//    print_r($get_img);
-
-//    print $qrcode_img;
-    //打印出图片
-//    header('Content-type: image/jpeg');
-//    echo $qrcode_img;
-
-    //传值到函数single
-//    print_r($short_url);
-    $ticket = $user->single($sid,$short_url);
-
-    $filename = './qrcode/qrcode.jpg';
-    $local_file = fopen($filename,'w');
-    $imageInfo = downloadImageFromWeixin($get_img);
-    if(false !== $local_file){
-        if(false !== fwrite($local_file,$imageInfo['body'])){
-            fclose($local_file);
-        }
-    }
+//    print $sid;
 
 
+    $ticket = $user->single($sid);
 }
-
 
 
 //获取access_token,get方式 file_get_connects($url).
-function get_weixin_token($appId,$appSecret){
-
-    $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appId}&secret={$appSecret}";
-    $return = file_get_contents($url);
-    $return = json_decode($return);
-    $access_token = $return -> access_token;
-//     echo $access_token;exit;
-    return $access_token;
-
-}
+//function get_weixin_token($appId,$appSecret){
+//
+//    $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appId}&secret={$appSecret}";
+//    $return = file_get_contents($url);
+//    $return = json_decode($return);
+//    $access_token = $return -> access_token;
+////     echo $access_token;exit;
+//    return $access_token;
+//
+//}
 
 //post方式生成临时二维码
-function postData($url, $data = null)
+function postWeixinData($url, $data = null)
 {
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $url);
